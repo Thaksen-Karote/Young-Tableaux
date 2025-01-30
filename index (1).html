@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Young Tableaux</title>
+<style>
+    .container {
+        display: flex;
+       /* justify-content: space-around; /* Space out the tables */
+    }
+    .table-wrapper {
+        text-align: center; /* Center the title below each table */
+        margin: 30px; /* Space between tables */
+    }
+    table {
+        border-collapse: collapse;
+        margin-bottom: 10px; /* Space between table and title */
+    }
+    td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+        width: 20px; /* Adjust width as needed */
+        height: 20px; /* Adjust height as needed */
+    }
+    .title {
+        font-weight: bold;
+    }
+    </style>
+</head>
+<body>
+
+<h1>Young Tableaux</h1>
+<p>Young diagram visually represents a partition of a positive integer, with a weakly decreasing number of boxes in each row. The total number of boxes is said to be the size of the Young diagram.
+    &lambda;= (&lambda;1, &lambda;2, . . . , &lambda;m). <br>
+    A Young tableau follow the following rules-
+
+    <ol>
+      <li>weakly increasing across each row</li>
+      <li>strictly increasing down each column</li>
+      
+    </ol> 
+    
+    A standard tableau is a tableau in which the entries are the
+    numbers from 1 to n (size of Young Tableaux).
+     <br> 
+     <div class="container">
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>5</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>6</td>
+                </tr>
+            </table>
+            <div class="title">Young Tableau</div>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>7</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>5</td>
+                    <td>10</td>
+                    <td>13</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>8</td>
+                    <td>11</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>9</td>
+                    
+                </tr>
+                
+            </table>
+            <div class="title">Standard Young Tableau</div>
+        </div>
+    </div>
+   
+    
+</p>
+
+<p>
+    <b >row-insertion</b> or <b>row bumping</b>:- Given a tableau T and a positive integer  x, we can construct a new tableau, denoted by T &larr; x , which has one more box than  T.<br>
+    insertion rules- <br>
+    1. If x is at least as large as all the entries in the first row of T, add x to the end of the first row.<br>
+    2. Otherwise, find the left-most entry in the first row that is strictly larger than x, place x in that box, and "bump" the entry.<br>
+    3. Repeat this process with the bumped entry in the next row.<br>
+    4. Continue until the bumped entry can be placed at the end of a row or forms a new row if bumped out of the bottom.
+
+ </p>
+ <p>
+<b>Sliding  </b>: Given a skew tableau S and an inside corner (an empty box), perform the following steps:<br>
+
+1. Slide the smaller of its two neighboring entries (to the right or below) into the empty box. If the two neighbors are equal, choose the one below.<br>
+2. Continue sliding entries in this manner until the empty box becomes an outside corner, at which point it is removed from the tableau.<br>
+3. You can then select a new inside corner in the resulting tableau and repeat the process until no inside corners remain.<br>
+The final tableau obtained through this procedure is called a rectification of S.<br>
+We can use anyone (Row-insertion and Sliding) to form product of two tableau. The number of boxes in the product will be the sum of the number of boxes in each.
+</p>
+
+<p>
+    For a tableau or skew tableau T, we define  word of T, denoted as w(T), by reading the entries of T from left to right and bottom to top.
+    <br>
+    A tableau T can be recovered from its word: simply break the word wherever one entry is strictly greater than the next, and the pieces are the rows of T, read from bottom to top. For example,
+the word 5644623551223 breaks into 5 6|4 4 6|2 3 5 5|1 2 2 3
+<br>
+<br>
+<b>Row-insertion in word :</b>
+Suppose an element x is row-inserted
+into a row In word language, the Schensted algorithm says to factor the
+word of the row into u&bull;x'&bull;v, where u and v are words, x' is a letter, and
+each letter in u is no larger than x, and x' is strictly larger than x. The
+letter x' is to be replaced by x, so the row with word u&bull;x'&bull;v becomes &bull;x&bull;v,
+and x' is bumped to the next row. The resulting tableau has word x'&bull;u&bull;x&bull;v.
+So in the word code, the basic algorithm is
+<br>
+<p style="text-align: center;">(u&bull;x'&bull;v)&bull;x &rarr; x'u&bull;x&bull;v  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   if u < x < x' < v.
+</p>
+<br>
+Here u and v are weakly increasing, and an inequality such as u < v means
+that every letter in u is smaller than or equal to every letter in v. In this code,
+the row-insertion of 2 in the tableau with word 5644623551223 can
+be written.
+<p style="text-align: center;">(5 6) (4 4 6) (2 3 5 5) (1 2 2 3)&bull;2 <br>&rarr;  (5 6) (4 4 6) (2 3 5 5)&bull;3&bull;(l 2 2 2) <br>&rarr; (5 6) (4 4 6)&bull;5&bull;(2 3 3 5) (1 2 2 2)<br>
+    &rarr; (5 6)&bull;6&bull;(4 4 5) (2 3 3 5) (1 2 2 2)<br> 
+    &rarr; (5 6 6) (4 4 5) (2 3 3 5) (12 2 2).</p>
+    We call two words <b>Knuth equivalent</b> if they can be changed into
+each other by a sequence of elementary Knuth transformations,
+    <p style="text-align: center;">   yzx &rarr; yxz &emsp; (x &lt; y &le; z) &emsp;&emsp; (K')<br>
+    xzy &rarr; zxy &emsp; (x &le; y &lt; z) &emsp;&emsp; (K")</p>
+    If T&bull;U is the product of two tableaux T and U, constructed by
+    row-inserting the word of U into T, then
+    w(T&bull;U) = w(T)&bull;w(U). <br>
+    If one skew tableau can be obtained from another by a sequence of slides, then their words are Knuth equivalent.<br>
+    Every word is Knuth equivalent to the word of a unique tableau.<br>
+    The rectification of a skew tableau S is the unique tableau whose word is Knuth equivalent to the word of S. If S and S' are skew tableaux,then Rect(S) = Rect(S') if and only if w(S) &equiv; w(S').<br>
+    The three constructions of the product of two tableaux agree.<br>
+    <b>Row word </b> RW: list the entries from left to right in each row, starting in the bottom row and moving to the top row.
+    <b>Column word </b> CW: list the entries from bottom to top in each column, starting in the left column and moving to the right.
+    <br>
+    <br>
+    Suppose a skew tableau T is divided into two skew tableaux T and T" by a horizontal or vertical line. Then W<small>row </small>(T) = W<small>row </small>(T'
+)&bull;W<small>row</small>(T").<br><br>
+If T is any skew tableau, then W<small>col </small>(T) is K'-equivalent to W<small>row </small>(T).
+</p>
+
+
+    
+    <h3>Schur Polynomials</h3>
+    <p>
+        Schur polynomials <em>S<sub>λ</sub>(x<sub>1</sub>, x<sub>2</sub>, &hellip;, x<sub>n</sub>)</em> are a family of symmetric polynomials indexed by partitions <em>λ</em>.
+        They can be defined using Young tableaux: for a given partition <em>λ</em>, the Schur polynomial can be expressed as a sum over all standard Young tableaux of shape <em>λ</em>.
+        Specifically, if <em>T</em> is a standard Young tableau of shape <em>λ</em>, the contribution of <em>T</em> to <em>S<sub>λ</sub></em> is given by the product of the variables corresponding to the entries of <em>T</em>.
+    </p>
+
+    
+
+    
+    <p>
+        The Schur polynomial <em>S<sub>λ</sub></em> can be computed using the following formula:
+    </p>
+    <pre>
+S<sub>λ</sub>(x<sub>1</sub>, x<sub>2</sub>, &hellip;, x<sub>n</sub>) = ∑<sub>T</sub> ∏<sub>i=1</sub><sup>n</sup> x<sub>i</sub><sup>entry in T</sup>
+    </pre>
+    <p>
+        where the sum is taken over all standard Young tableaux <em>T</em> of shape <em>λ</em>.
+        This relationship shows how Schur polynomials capture combinatorial information about the tableaux corresponding to a given partition.
+    </p>
+
+    
+</body>
+</html>
